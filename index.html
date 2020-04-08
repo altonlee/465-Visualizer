@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Visualizer 465</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="./style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+
+    <script src="./modules/highcharts.js"></script>
+    <script src="./modules/highcharts-more.js"></script>
+    <script src="./modules/series-label.js"></script>
+    <script src="./modules/exporting.js"></script>
+    <script src="./modules/export-data.js"></script>
+    <script src="./modules/accessibility.js"></script>
+    <script src="./modules/drilldown.js"></script>
+  </head>
+<body>
+  <div class="ui grid container" style="height: 100vh; display: flex; justify-content: space-around; align-items: center">
+    <div class="six wide computer sixteen wide tablet column">
+      <div class="fluid container">
+        <h1 class="ui header">Visualizer 465</h1>
+        <div class="ui form">
+          <h4 class="ui dividing header">Headings</h4>
+          <div class="fields">
+            <div class="twelve wide field">
+              <label>Title</label>
+              <input type="text" name="title">
+            </div>
+            <div class="two wide field" style="padding-top: 1.7em">
+              <div class="ui scrolling icon pointing dropdown button" data-tooltip="Change graph type">
+                <i class="chart area icon"></i>
+                <input type="hidden" name="chart-type">
+                <div class="right menu">
+                  <div class="item" data-value="column">Bar Graph</div>
+                  <div class="item" data-value="pie">Pie Chart</div>
+                  <div class="item" data-value="bar">Inverted Bar</div>
+                  <div class="item" data-value="line">Line Chart</div>
+                </div>
+              </div>
+            </div>
+            <div class="two wide field" style="padding-top: 1.7em">
+              <div class="ui icon button" id="settings-button" data-tooltip="Edit chart settings"><i class="cog icon"></i></div>
+            </div>
+          </div>
+          <div class="ui action field">
+            <label>Subtitle</label>
+            <div class="ui action input">
+              <input type="text" name="subtitle">
+              <button class="ui blue icon button" data-tooltip="Add as source"><i class="linkify icon"></i></button>
+            </div>
+          </div>
+          <div class="two fields">
+            <div class="field">
+              <label>X-Axis</label>
+              <div class="ui input">
+                <input type="text" name="xaxis">
+              </div>
+            </div>
+            <div class="field">
+              <label>Y-Axis</label>
+              <div class="ui input">
+                <input type="text" name="yaxis">
+              </div>
+            </div>
+          </div>
+          <h4 class="ui dividing header">Chart Data</h4>
+          <div class="ui right aligned container">
+              <div class="ui icon button" id="add-button" data-tooltip="Add series of data"><i class="plus icon"></i></div>
+            <div class="ui icon button" data-tooltip="Edit or remove data"><i class="pencil alternate icon"></i></div>
+          </div>
+          <div class="ui container" id="series-container">
+            <button class="ui labeled icon button" id="series-1"><i class="box icon"></i>Series 1</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <div class="ten wide computer sixteen wide tablet column">
+      <figure class="highcharts-figure"><div id="chartarea"></div></figure>
+    </div>
+  </div>
+
+
+
+
+  <div class="ui tiny modal" id="add-modal">
+    <div class="content">
+      <div class="ui form">
+        <h4 class="dividing header">Add data</h4>
+        <div id="add-rows">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui tiny modal" id="settings-modal">
+    <div class="content">
+      <div class="ui form">
+        <h4 class="ui dividing header">asfd</h4>
+        <div class="field">
+          <label>Option1</label>
+          <input type="text">
+        </div>
+        <h4 class="ui dividing header">Responsiveness</h4>
+        <div class="fields">
+          <div class="field">
+            <label>Option1</label>
+            <input type="text">
+          </div>
+          <div class="field">
+            <label>Option2</label>
+            <input type="text">
+          </div>
+          <div class="field">
+            <label>Option3</label>
+            <input type="text">
+          </div>
+        </div>
+        <h4 class="ui dividing header">Miscellaneous</h4>
+        <div class="fields">
+          <div class="field">
+            <label>Style</label>
+            <input type="text">
+          </div>
+          <div class="field">
+            <label>Option2</label>
+            <input type="text">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="./chartarea.js"></script>
+</body>
+</html>
