@@ -20,19 +20,42 @@
 <body>
   <div class="ui grid container" style="height: 100vh; display: flex; justify-content: space-around; align-items: center">
     <div class="six wide computer sixteen wide tablet column">
-      <div class="fluid container">
+      <div class="fluid container" style="padding-top: 15px">
         <h1 class="ui header">Visualizer 465</h1>
         <div class="ui form">
           <h4 class="ui dividing header">Headings</h4>
           <div class="fields">
-            <div class="twelve wide field">
+            <div class="six wide field">
               <label>Title</label>
               <input type="text" name="title">
+            </div>
+            <div class="ten wide field">
+              <div class="ui action field">
+                <label>Subtitle</label>
+                <div class="ui action input">
+                  <input type="text" name="subtitle">
+                  <button class="ui blue icon button" data-tooltip="Add as source"><i class="linkify icon"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="four fields">
+            <div class="six wide field">
+              <label>X-Axis</label>
+              <div class="ui input">
+                <input type="text" name="xaxis">
+              </div>
+            </div>
+            <div class="six wide field">
+              <label>Y-Axis</label>
+              <div class="ui input">
+                <input type="text" name="yaxis">
+              </div>
             </div>
             <div class="two wide field" style="padding-top: 1.7em">
               <div class="ui scrolling icon pointing dropdown button" data-tooltip="Change graph type">
                 <i class="chart area icon"></i>
-                <input type="hidden" name="chart-type">
+                <input type="hidden" name="chart-select">
                 <div class="right menu">
                   <div class="item" data-value="column">Bar Graph</div>
                   <div class="item" data-value="pie">Pie Chart</div>
@@ -45,57 +68,54 @@
               <div class="ui icon button" id="settings-button" data-tooltip="Edit chart settings"><i class="cog icon"></i></div>
             </div>
           </div>
-          <div class="ui action field">
-            <label>Subtitle</label>
-            <div class="ui action input">
-              <input type="text" name="subtitle">
-              <button class="ui blue icon button" data-tooltip="Add as source"><i class="linkify icon"></i></button>
-            </div>
-          </div>
-          <div class="two fields">
-            <div class="field">
-              <label>X-Axis</label>
-              <div class="ui input">
-                <input type="text" name="xaxis">
-              </div>
-            </div>
-            <div class="field">
-              <label>Y-Axis</label>
-              <div class="ui input">
-                <input type="text" name="yaxis">
-              </div>
-            </div>
-          </div>
           <h4 class="ui dividing header">Chart Data</h4>
-          <div class="ui right aligned container">
-              <div class="ui icon button" id="add-button" data-tooltip="Add series of data"><i class="plus icon"></i></div>
-            <div class="ui icon button" data-tooltip="Edit or remove data"><i class="pencil alternate icon"></i></div>
+          <div style="padding-bottom: 10px" class="ui right aligned container">
+            <div class="ui icon button" id="add-button" data-tooltip="Add series of data"><i class="plus icon"></i></div>
+            <div class="ui scrolling icon pointing dropdown button" data-tooltip="Modify graph data">
+              <i class="pencil icon"></i>
+              <input type="hidden" name="edit-select">
+              <div class="right menu" id="edit-menu">
+                <div class="item" data-value="0">Series 1</div>
+              </div>
+            </div>
           </div>
-          <div class="ui container" id="series-container">
-            <button class="ui labeled icon button" id="series-1"><i class="box icon"></i>Series 1</button>
+          <div style="max-height: 35vh; overflow: auto" class="ui container">
+            <table class="ui celled striped unstackable table" id="datatable">
+            </table>
           </div>
         </div>
       </div>
     </div>
-
-
-
-
     <div class="ten wide computer sixteen wide tablet column">
       <figure class="highcharts-figure"><div id="chartarea"></div></figure>
     </div>
   </div>
 
-
-
-
-  <div class="ui tiny modal" id="add-modal">
-    <div class="content">
-      <div class="ui form">
-        <h4 class="dividing header">Add data</h4>
-        <div id="add-rows">
+  <div class="ui small modal" id="series-modal">
+    <div class="scrolling content">
+      <div class="ui form" id="series-form">
+        <h4 class="ui dividing header" id="modal-header">Add Series</h4>
+        <div class="field">
+          <label>Series Name</label>
+          <input id="series-name" name="series-name" type="text" placeholder="Series Name">
         </div>
+        <table class="ui celled striped unstackable table">
+          <thead>
+            <tr><th class="seven wide">Column Name</th>
+            <th class="seven wide">Value</th>
+            <th class="one wide"><i class="trash alternate icon"></i></th></tr>
+          </thead>
+          <tbody id="series-table">
+          </tbody>
+          <tfoot><tr>
+            <td><div class="ui input"><input id="series-form-name" name="series-form-name" type="text" placeholder="Row Name"></div></td>
+            <td><div class="ui input"><input id="series-form-val" name="series-form-name" type="number" placeholder="Data Value"></div></td>
+            <td><a id="add-row-icon"><i class="add icon"></i></a></td>
+          </tr></tfoot>
+        </table>
       </div>
+      <button id="save-button" style="margin: 10px 0px" class="ui right floated primary button"><i class="save icon"></i>Save</button>
+      <button id="del-button" style="margin: 10px 0px" class="ui red button"><i class="trash alternate icon"></i>Delete</button>
     </div>
   </div>
   <div class="ui tiny modal" id="settings-modal">
@@ -133,6 +153,7 @@
           </div>
         </div>
       </div>
+      <button style="margin-bottom: 10px" class="ui right floated primary button"><i class="save outline icon"></i>Save</button>
     </div>
   </div>
   <script src="./chartarea.js"></script>
