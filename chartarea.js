@@ -38,9 +38,7 @@ var chart = Highcharts.chart('chartarea', {
         }
     },
     series: [{
-        colorByPoint: true,
-        data: chartData[0],
-        showInLegend: false
+        data: chartData[0]
     }], 
     responsive: {
       rules: [{
@@ -104,38 +102,7 @@ $('input[name="chart-select"]').on('change', function() {
   chart.update({ chart: { type: this.value } });
 });
 
-/*********************************************************
- *  FORM FUNCTIONS
- *********************************************************/
-
-// load variables when document is fully loaded
-document.addEventListener("DOMContentLoaded", function() {
-  $('.ui.dropdown').dropdown({ on: 'hover' });
-  updateChartTable();
-});
-
-// deleting a series row
-$('#series-table').on('click', 'i[class="close icon"]', function(e) {
-  // get row parent element
-  var val = $(this).closest('tr');
-  // remove data from being pushed
-  seriesData.splice(seriesData.indexOf(val.find('input[type="number"]')[0].value), 1);
-  seriesCols.splice(seriesCols.indexOf(val.find('input[type="text"]')[0].value), 1);
-  // remove table row
-  val.remove();
-});
-
-// deleting a series
-$('#del-button').click(function () {
-  clearForm();
-  chartNames.splice(curr, 1);
-  chartData.splice(curr, 1);
-  chartCols.splice(curr, 1);
-  $('#series-' + (curr + 1))[0].outerHTML = "";
-  $('#series-modal').modal('hide');
-});
-
-// Changes graph data to selected series
+// updates data table
 function updateChartTable() {
   var table = "";
   
@@ -147,7 +114,7 @@ function updateChartTable() {
   }
   table += "</tr></thead>";
   
-  // get table body
+  // create table via a string
   table += "<tbody>";
   for (var i = 0; i < chartCols.length; i++) {
     // table column
@@ -162,6 +129,83 @@ function updateChartTable() {
   
   $('#datatable').html(table);
 
+}
+
+/*********************************************************
+ *  FORM FUNCTIONS
+ *********************************************************/
+
+// load variables when document is fully loaded
+document.addEventListener("DOMContentLoaded", function() {
+  $('.ui.dropdown').dropdown({ on: 'hover' });
+  updateChartTable();
+});
+
+// clears form, resets local series data
+function clearForm() {
+  seriesData = [];
+  seriesCols = [];
+  $('#series-table').html("");
+  $('#series-name').val("");
+  $('#series-form-name').val("");
+  $('#series-form-val').val("");
+  $('#del-button').css("display", "none");
+}
+
+// grabs form input
+function grabForm(length) {
+  // grab add form data
+  for (var i = 0; i < length; i++) {
+    var colName = "#series-name-" + i;
+    var valName = "#series-val-" + i;
+    
+    if ($(valName).val() != null) {
+      seriesData.push(Number($(valName).val()));
+      seriesCols.push($(colName).val());
+    }
+  }
+}
+
+// deleting a series row
+$('#series-table').on('click', 'i[class="close icon"]', function(e) {
+  // get row parent element
+  var val = $(this).closest('tr');
+  // remove data from being pushed
+  seriesData.splice(seriesData.indexOf(val.find('input[type="number"]')[0].value), 1);
+  seriesCols.splice(seriesCols.indexOf(val.find('input[type="text"]')[0].value), 1);
+  // remove table row
+  val.remove();
+});
+
+// deleting a series
+$('#del-button').click(function () {
+  if (chartData.length == 1) {
+    newChart();
+  } else {
+    chartNames.splice(curr, 1);
+    chartData.splice(curr, 1);
+    chartCols.splice(curr, 1);
+    clearForm();
+    updateChartTable();
+    chart.series[curr].remove(true);
+  }
+
+  $('#series-modal').modal('hide');
+});
+
+$('#new-button').click(function () {
+  newChart();
+});
+
+// new graph
+function newChart() {
+  $('#datatable').html("");
+  chartData = [];
+  chartCols = [];
+  chartNames = [];
+  while (chart.series.length > 0) {
+    chart.series[0].remove(true);
+  }
 }
 
 /*********************************************************
@@ -265,6 +309,7 @@ $('input[name="edit-select"]').on('change', function() {
  *  SAVE TABLE VALS FUNCTIONS
 **********************************************************/
 
+// save add/edit modal
 $('#save-button').click(function() {
   // if we're adding data...
   if ($('#modal-header').html() === "Add Series") {
@@ -281,7 +326,7 @@ $('#save-button').click(function() {
         chartData.push(seriesData);
         chartCols = [];
         chartCols = seriesCols;
-        
+        // add series into edit menu
         curr = chartData.length;
         $('#edit-menu').append(
           '<div class="item" data-value="' + (curr - 1) + '">Series ' + curr + '</div>'
@@ -289,6 +334,12 @@ $('#save-button').click(function() {
 
         curr -= 1;
         x = 0;
+        
+        // add series into chart
+        chart.addSeries({
+          name: chartNames[curr],
+          data: chartData[curr]
+        }, false);
       }
     }
   // else, we're saving data
@@ -306,6 +357,11 @@ $('#save-button').click(function() {
         chartData.splice(curr, 1, seriesData);
         chartCols = [];
         chartCols = seriesCols;
+        // draw series onto graph
+        for (var i = 0; i < chartData.length; i++) {
+          chart.series[i].setName(chartNames[i], false);
+          chart.series[i].setData(chartData[i], false);
+        }
       }
     }
   }
@@ -314,35 +370,13 @@ $('#save-button').click(function() {
   clearForm();
   $('#series-modal').modal("hide");
   updateChartTable();
+  chart.redraw();
 });
 
 
 /*********************************************************
  *  MISC
 **********************************************************/
-
-function clearForm() {
-  seriesData = [];
-  seriesCols = [];
-  $('#series-table').html("");
-  $('#series-name').val("");
-  $('#series-form-name').val("");
-  $('#series-form-val').val("");
-  $('#del-button').css("display", "none");
-}
-
-function grabForm(length) {
-  // grab add form data
-  for (var i = 0; i < length; i++) {
-    var colName = "#series-name-" + i;
-    var valName = "#series-val-" + i;
-    
-    if ($(valName).val() != null) {
-      seriesData.push($(valName).val());
-      seriesCols.push($(colName).val());
-    }
-  }
-}
 
 $('#settings-button').click(function () {
   $('#settings-modal').modal('show');
