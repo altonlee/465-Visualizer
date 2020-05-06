@@ -134,6 +134,7 @@ function updateChartTable() {
   }
   table += "</tbody>";
   
+  chart.update({ xAxis: { categories: chartCols } });
   $('#datatable').html(table);
 
 }
@@ -153,7 +154,7 @@ document.addEventListener("DOMContentLoaded", function() {
 function clearForm() {
   seriesData = [];
   seriesCols = [];
-  $('#series-table').html("");
+  $('#series-table').empty();
   $('#series-name').val("");
   $('#series-form-name').val("");
   $('#series-form-val').val("");
@@ -190,10 +191,13 @@ $('#del-button').click(function () {
   if (chartData.length == 1) {
     newChart();
   } else {
+    // delete from form
+    console.log(curr);
+    clearForm();
+    // delete off chart
     chartNames.splice(curr, 1);
     chartData.splice(curr, 1);
     chartCols.splice(curr, 1);
-    clearForm();
     updateChartTable();
     chart.series[curr].remove(true);
   }
@@ -209,10 +213,17 @@ $('#new-button').click(function () {
 
 // new graph
 function newChart() {
-  $('#datatable').html("");
+  // delete form
+  $('#datatable').empty();
+  $('#edit-menu').empty();
   chartData = [];
   chartCols = [];
   chartNames = [];
+  // delete chart
+  chart.update({ title: { text: "" } });
+  chart.update({ subtitle: { text: "" } });
+  chart.update({ xAxis: { title: { text: "" } } });
+  chart.update({ yAxis: { title: { text: "" } } });
   while (chart.series.length > 0) {
     chart.series[0].remove(true);
   }
@@ -261,9 +272,6 @@ $('#add-row-icon').click(function () {
   } else if (!$.isNumeric($('#series-form-val').val())) {
     alert("Value must be a number.");
   } else {
-    seriesData.push($('#series-form-val').val());
-    seriesCols.push($('#series-form-name').val());
-
     // appends input as table row
     $('#series-table').append(
       '<tr>' + 
@@ -324,7 +332,6 @@ $('#save-button').click(function() {
   // if we're adding data...
   if ($('#modal-header').html() === "Add Series") {
     grabForm(x);
-    
     // if form was not empty
     if (seriesData[0] != null) {
       if ($('#series-name').val() === "") {
