@@ -5,17 +5,16 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Visualizer 465</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
-    <link rel="stylesheet" type="text/css" href="./style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
 
-    <script src="./modules/highcharts.js"></script>
-    <script src="./modules/highcharts-more.js"></script>
-    <script src="./modules/series-label.js"></script>
-    <script src="./modules/exporting.js"></script>
-    <script src="./modules/export-data.js"></script>
-    <script src="./modules/accessibility.js"></script>
-    <script src="./modules/drilldown.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
+    <script src="https://code.highcharts.com/series-label.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
   </head>
 <body>
   <div class="ui grid container" style="height: 100vh; display: flex; justify-content: space-around; align-items: center">
@@ -105,7 +104,7 @@
         </div>
         <table class="ui celled striped unstackable table">
           <thead>
-            <tr><th class="seven wide">Column Name</th>
+            <tr><th class="eight wide">Column Name</th>
             <th class="seven wide">Value</th>
             <th class="one wide"><i class="trash alternate icon"></i></th></tr>
           </thead>
@@ -125,39 +124,88 @@
   <div class="ui tiny modal" id="settings-modal">
     <div class="content">
       <div class="ui form">
-        <h4 class="ui dividing header">asfd</h4>
-        <div class="field">
-          <label>Option1</label>
-          <input type="text">
+        <h4 class="ui dividing header">Chart Display</h4>
+        <div class="fields">
+          <div class="eight wide field">
+              <label>Font</label>
+              <div class="ui disabled selection dropdown">
+                  <input type="hidden">
+                  <i class="dropdown icon"></i>
+                  <div class="default text">Default</div>
+                  <div class="menu">
+                      <div class="item" data-value="1">Semantic UI</div>
+                      <div class="item" data-value="0">Twitter</div>
+                  </div>
+              </div>
+          </div>
+          <div class="eight wide field">
+            <div class="inline fields" style="padding-top: 1.8em">
+              <div class="field">
+                <div class="ui checkbox">
+                  <input type="checkbox" name="fruit" tabindex="0" class="hidden">
+                  <label>Show Legend</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui checkbox">
+                  <input type="checkbox" name="fruit" tabindex="0" class="hidden">
+                  <label>Hide Columns</label>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <h4 class="ui dividing header">Responsiveness</h4>
+        <h4 class="ui dividing header">Data Options</h4>
         <div class="fields">
           <div class="field">
-            <label>Option1</label>
-            <input type="text">
+              <label>Color Aesthetics</label>
+              <div class="ui disabled selection dropdown">
+                  <input type="hidden">
+                  <i class="dropdown icon"></i>
+                  <div class="default text">Default</div>
+                  <div class="menu">
+                      <div class="item" data-value="1">Bold</div>
+                      <div class="item" data-value="0">Rainbow</div>
+                  </div>
+              </div>
           </div>
-          <div class="field">
-            <label>Option2</label>
-            <input type="text">
-          </div>
-          <div class="field">
-            <label>Option3</label>
-            <input type="text">
-          </div>
-        </div>
-        <h4 class="ui dividing header">Miscellaneous</h4>
-        <div class="fields">
-          <div class="field">
-            <label>Style</label>
-            <input type="text">
-          </div>
-          <div class="field">
-            <label>Option2</label>
-            <input type="text">
+          <div class="ui action field">
+            <label>Load External Data</label>
+            <div class="ui disabled action input">
+              <input type="text">
+              <button class="ui blue icon button"><i class="folder icon"></i></button>
+            </div>
           </div>
         </div>
+        <h4 class="ui dividing header">Advanced Options</h4>
+          <div class="inline fields">
+            <div class="field">
+              <div class="ui checkbox">
+                <input type="checkbox" name="fruit" tabindex="0" class="hidden">
+                <label>Drilldown</label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui checkbox">
+                <input type="checkbox" name="fruit" tabindex="0" class="hidden">
+                <label>Enable Alt. Colors</label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui checkbox">
+                <input type="checkbox" name="fruit" tabindex="0" class="hidden">
+                <label>Dark Mode</label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui checkbox">
+                <input type="checkbox" name="fruit" tabindex="0" class="hidden">
+                <label>Grapefruit</label>
+              </div>
+            </div>
+          </div>
       </div>
-      <button style="margin-bottom: 10px" class="ui right floated primary button"><i class="save outline icon"></i>Save</button>
+      <button id="settings-save" style="margin-bottom: 10px" class="ui right floated primary button"><i class="save outline icon"></i>Save</button>
     </div>
   </div>
   <script src="./chartarea.js"></script>

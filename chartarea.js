@@ -9,10 +9,16 @@ var chartData = [[29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 1
 var chartCols = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 var defaultColors = ["#7cb5ec", "#434348", "#90ed7d", "#f7a35c", "#8085e9", "#f15c80", "#e4d354", "#2b908f", "#f45b5b", "#91e8e1"];
 
+/*Highcharts.setOptions({
+  chart: {
+    style: {
+      fontFamily: "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif",
+      fontWeight: 'normal'
+    }
+  }
+});*/
+
 var chart = Highcharts.chart('chartarea', {
-    data: {
-      table: 'datatable'
-    },
     chart: {
       type: "column",
     }, 
@@ -38,6 +44,7 @@ var chart = Highcharts.chart('chartarea', {
         }
     },
     series: [{
+        name: chartNames[0],
         data: chartData[0]
     }], 
     responsive: {
@@ -138,6 +145,7 @@ function updateChartTable() {
 // load variables when document is fully loaded
 document.addEventListener("DOMContentLoaded", function() {
   $('.ui.dropdown').dropdown({ on: 'hover' });
+  $('.ui.checkbox').checkbox();
   updateChartTable();
 });
 
@@ -193,8 +201,10 @@ $('#del-button').click(function () {
   $('#series-modal').modal('hide');
 });
 
+// new graph button
 $('#new-button').click(function () {
-  newChart();
+  if (confirm("Are you sure you want to start fresh?"))
+    newChart();
 });
 
 // new graph
@@ -379,6 +389,10 @@ $('#save-button').click(function() {
 **********************************************************/
 
 $('#settings-button').click(function () {
-  $('#settings-modal').modal('show');
+  $('#settings-modal').modal('toggle');
+});
+
+$('#settings-save').click(function () {
+  $('#settings-modal').modal('toggle');
 });
 
